@@ -52,28 +52,33 @@ document.getElementById('file').onchange = function(){
 
   var reader = new FileReader();
   reader.onload = function(progressEvent){
-    // Entire file
-    console.log(this.result);
-    console.log("test")
-    // By lines
+    // Entire file. Used for debug
+    //console.log(this.result);
     var lines = this.result.split('\n');
-    if (lines.lenght > 5){
-
+    let row_number = lines.length;
+    console.log(row_number);
+    if (lines.length < 6){
+      var ElementsToAnalyze=[];
+      //Check url validity
+      for(var line = 0; line < (lines.length - 1); line++){
+        console.log(line, lines.length);
+        url_to_control = (lines[line]);
+        var siteValid = ValidURL(url_to_control);
+          if (siteValid == true){
+            ElementsToAnalyze[line] = url_to_control;
+          }
+      }
+  }
+    else
+    {
+        alert("Troppi URL!!!");
     }
-    var ElementsToAnalyze=[];
-    for(var line = 0; line < lines.length; line++){
-      url_to_control = (lines[line]);
-      var siteValid = ValidURL(url_to_control);
-      console.log(siteValid);
+};
 
-  if ( siteValid == true )
-		{
-		console.log(url_to_control);
-	  }
-   }
- };
   reader.readAsText(file);
  }
+
+
 </script>
 </body>
 </html>
