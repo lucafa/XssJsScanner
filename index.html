@@ -15,7 +15,7 @@ function getSourceAsDOM(url)
     xmlhttp.open("GET",url,false);
     xmlhttp.send();
     parser=new DOMParser();
-    alert(xmlhttp.responseText);      
+    alert(xmlhttp.responseText);
 }
 
 function ValidURL(str) {
@@ -40,7 +40,7 @@ function ValidURL(str) {
  <body>
    <h1> XSS Scanner javascript </h1>
    <input name="urlToAnalyze" id="test2" class="inputPanel" type="text" size="20" maxlength="40" value="Inserire URL da analizzare"/>
-   <button onclick="getSourceAsDOM(document.getElementById('test2').value)">Dio canaglione cane</button>
+   <button onclick="getSourceAsDOM(document.getElementById('test2').value)">Analyze</button>
    <p/>
 
 <input type="file" name="file" id="file">
@@ -59,16 +59,16 @@ document.getElementById('file').onchange = function(){
     for(var line = 0; line < lines.length; line++){
       url_to_control = (lines[line]);
       var siteValid = ValidURL(url_to_control);
-	if ( siteValid == true ) 
-		{ 
+	if ( siteValid == true )
+		{
 		ElementsToAnalize[line] = url_to_control;
-	} 
-		
+	}
+
     }
 
 for (var x=0; x<5; x++){
 	alert(ElementsToAnalize[x]);
-}  
+}
 };
   reader.readAsText(file);
 }
