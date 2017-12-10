@@ -7,21 +7,22 @@
 
 <script type="text/javascript">
 
-/*function getSourceAsDOM(url)
-{
-    url = 'http://allow-any-origin.appspot.com/' + url;
-    alert(url);
-    xmlhttp=new XMLHttpRequest();
-    xmlhttp.open("GET",url,false);
-    xmlhttp.send();
-    parser=new DOMParser();
-    alert(xmlhttp.responseText);
-}*/
+function verifyDOM(url){
+  url = 'http://allow-any-origin.appspot.com/' + url;
+  alert(url);
+  xmlhttp=new XMLHttpRequest();
+  xmlhttp.open("GET",url,false);
+  xmlhttp.send();
+  parser=new DOMParser();
+  alert(xmlhttp.responseText);
+}
 
 function ValidURL(textval) {
+  //For test into private net remove proxy
   urlControl = 'http://allow-any-origin.appspot.com/' + textval;
   xhr = new XMLHttpRequest();
-  xhr.open("GET",urlControl,false)
+  xhr.open("GET",urlControl,false);
+  //xhr.responseType= "text";
   xhr.send();
   verifyURL = new DOMParser();
   var sito = xhr.responseText;
@@ -30,11 +31,63 @@ function ValidURL(textval) {
   {
     return false;
   }
-  else {
-    return true;
-  }
+  console.log("Ecco la pagina HTML del sito: " , urlControl);
+  //console.log(sito);
+  riga = sito.split('\n');
+  var posizione, stringa, value_post, stringa_post, pos_temp,str_temp, UrlDaControllare;
+  var linkOnPage=[];
+  //Trovo i campi name per inject XSS
+   for (var x=0; x<riga.length; x++){
+          posizione=riga[x];
+          //stringa = posizione.indexOf("<form ");
+          stringa = posizione.indexOf('type="text"');
+          if (stringa != -1){
+     pos_temp = posizione.indexOf("name=");
+      if (pos_temp != -1){
+        pos_temp = posizione.substring(pos_temp+5);
+        value_post = pos_temp.match(/"([^"]+)"/)[1];
+        //Partendo dal numero di riga dove ho trovato il campo "type=text" faccio una ricerca inversa per trovare i campi del form
+        for (var y=x; y>0;y--){
+          pos_temp = riga[y];
+          str_temp = pos_temp.lastIndexOf("<form");
+          if (str_temp != -1 ){
+          str_temp =  pos_temp.substring(str_temp+5);
+          stringa_post = str_temp.match(/"([^"]+)"/)[1];
+          //console.log(y,stringa_post,value_post);
+          UrlDaControllare=urlControl+'/'+stringa_post;
+          console.log(UrlDaControllare);
+             xssExist = TestXSS("GET", UrlDaControllare,value_post);
+
+        }
+      }
+     }
+   }
+
+   }
 }
 
+function TestXSS(method,url,parameters){
+
+  var responseStatus;
+  var params;
+  //Leggo i payyloads dal file payyloads
+  var readerPayloads = new FileReader();
+  readerPayloads.onload = function(){
+    var lines = readerPayloads.split('\n');
+    for (var z=0; z< readerPayloads.length;z++)
+    {
+      console.log(lines[z]);
+    }
+  }
+  readerPayloads.readAsText("/var/www/html/XssJsScanner/payloads","UTF-8");
+
+  xssTest = new XMLHttpRequest();
+  xssTest.open(method,url,false);
+  xssTest.send(params);
+  var sito = xssTest.responseText;
+  responseStatus = xssTest.status;
+  console.log(responseStatus);
+}
 </script>
 
 </head>
@@ -42,7 +95,7 @@ function ValidURL(textval) {
  <body>
    <h1> XSS Scanner javascript </h1>
    <input name="urlToAnalyze" id="test2" class="inputPanel" type="text" size="20" maxlength="40" value="Inserire URL da analizzare"/>
-   <button onclick="getSourceAsDOM(document.getElementById('test2').value)">Ana...lyze</button>
+   <button onclick="parseURL('http://www.ansa.it')">Ana...lyze</button>
    <p/>
 
 <input type="file" name="file" id="file">
@@ -56,27 +109,25 @@ document.getElementById('file').onchange = function(){
     //console.log(this.result);
     var lines = this.result.split('\n');
     let row_number = lines.length;
-    console.log(row_number);
-    if (lines.length < 6){
-      var ElementsToAnalyze=[];
-      //Check url validity
+    if (lines.length > 6){
+        alert("Troppi URL!!!");
+        return;
+    }
+
       for(var line = 0; line < (lines.length - 1); line++){
-        console.log(line, lines.length);
         url_to_control = (lines[line]);
         var siteValid = ValidURL(url_to_control);
-          if (siteValid == true){
-            ElementsToAnalyze[line] = url_to_control;
+          if (siteValid == false){
+            console.log("Il sito non esiste o non è verificabile!");
           }
       }
-  }
-    else
-    {
-        alert("Troppi URL!!!");
-    }
+
+
 };
 
   reader.readAsText(file);
  }
+//Download any elements of array that contain url and take a look of Dom
 
 
 </script>
