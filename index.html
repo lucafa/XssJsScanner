@@ -56,7 +56,11 @@ function ValidURL(textval) {
           stringa_post = str_temp.match(/"([^"]+)"/)[1];
           //console.log(y,stringa_post,value_post);
           UrlDaControllare=urlControl+'/'+stringa_post;
+<<<<<<< HEAD
           //console.log(UrlDaControllare, value_post);
+=======
+          console.log(UrlDaControllare, value_post);
+>>>>>>> b78d9670ba6124a3324eefdeb64bb3202b6130ad
              xssExist = TestXSS("GET", UrlDaControllare,value_post);
 
         }
@@ -84,12 +88,18 @@ function TestXSS(method,url,parameters){
               allText = rawFile.responseText;
               allText = allText.split('\n');
               length_file = allText.length;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b78d9670ba6124a3324eefdeb64bb3202b6130ad
               //La variabile allText è un array che contiene tutti i payloads da testare per l'attacco
           }
       }
   }
   rawFile.send(null);
    var test_xss = new XMLHttpRequest();
+<<<<<<< HEAD
    var stringaGet, ResponseSite, stringaConfronto;
    //testo tutti i parametri che ho nel file
    for (var z=0; z< (length_file - 1); z++){
@@ -107,6 +117,16 @@ function TestXSS(method,url,parameters){
      if (stringaConfronto != -1){
        alert("Possibile XSS!!!!");
      }
+=======
+   var stringaGet;
+   //testo tutti i parametri che ho nel file
+   for (var z=0; z< (length_file - 1); z++){
+     console.log("Parametro da testare:", allText[z] );
+     stringaGet= (url + "?" + parameters + "=" + allText[z]);
+     console.log(stringaGet);
+     test_xss.open(method,stringaGet,parameters);
+     test_xss.send();
+>>>>>>> b78d9670ba6124a3324eefdeb64bb3202b6130ad
    }
 }
 
