@@ -41,6 +41,7 @@ function ValidURL(textval) {
           posizione=riga[x];
           //stringa = posizione.indexOf("<form ");
           stringa = posizione.indexOf('type="text"');
+
           if (stringa != -1){
      pos_temp = posizione.indexOf("name=");
       if (pos_temp != -1){
@@ -55,7 +56,7 @@ function ValidURL(textval) {
           stringa_post = str_temp.match(/"([^"]+)"/)[1];
           //console.log(y,stringa_post,value_post);
           UrlDaControllare=urlControl+'/'+stringa_post;
-          console.log(UrlDaControllare);
+          console.log(UrlDaControllare, value_post);
              xssExist = TestXSS("GET", UrlDaControllare,value_post);
 
         }
@@ -68,26 +69,48 @@ function ValidURL(textval) {
 
 function TestXSS(method,url,parameters){
 
-  var responseStatus;
-  var params;
-  //Leggo i payyloads dal file payyloads
-  var readerPayloads = new FileReader();
-  readerPayloads.onload = function(){
-    var lines = readerPayloads.split('\n');
-    for (var z=0; z< readerPayloads.length;z++)
-    {
-      console.log(lines[z]);
-    }
-  }
-  readerPayloads.readAsText("/var/www/html/XssJsScanner/payloads","UTF-8");
+  var responseStatus,length_file, allText;
+  var params="payloads";
+  var Param_reader = new FileReader();
+  //Leggo il file di configurazione per caricare i payloads
+  var rawFile = new XMLHttpRequest();
+  rawFile.open("GET", params, false);
+  rawFile.onreadystatechange = function ()
+  {
+      if(rawFile.readyState === 4)
+      {
+          if(rawFile.status === 200 || rawFile.status == 0)
+          {
+              allText = rawFile.responseText;
+              allText = allText.split('\n');
+              length_file = allText.length;
 
-  xssTest = new XMLHttpRequest();
+
+              //La variabile allText è un array che contiene tutti i payloads da testare per l'attacco
+          }
+      }
+  }
+  rawFile.send(null);
+   var test_xss = new XMLHttpRequest();
+   var stringaGet;
+   //testo tutti i parametri che ho nel file
+   for (var z=0; z< (length_file - 1); z++){
+     console.log("Parametro da testare:", allText[z] );
+     stringaGet= (url + "?" + parameters + "=" + allText[z]);
+     console.log(stringaGet);
+     test_xss.open(method,stringaGet,parameters);
+     test_xss.send();
+   }
+}
+
+
+  /*xssTest = new XMLHttpRequest();
   xssTest.open(method,url,false);
   xssTest.send(params);
   var sito = xssTest.responseText;
   responseStatus = xssTest.status;
   console.log(responseStatus);
-}
+*/
 </script>
 
 </head>
@@ -95,7 +118,7 @@ function TestXSS(method,url,parameters){
  <body>
    <h1> XSS Scanner javascript </h1>
    <input name="urlToAnalyze" id="test2" class="inputPanel" type="text" size="20" maxlength="40" value="Inserire URL da analizzare"/>
-   <button onclick="parseURL('http://www.ansa.it')">Ana...lyze</button>
+   <button onclick="TestXSS('payloads')">Ana...lyze</button>
    <p/>
 
 <input type="file" name="file" id="file">

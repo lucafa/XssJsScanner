@@ -1,0 +1,33 @@
+{
+	"attacks":
+	[
+	"<SCRIPT>alert(String.fromCharCode(77,69,82,67,65,68,79))</SCRIPT>",
+	"<ScRiPt>alert(String.fromCharCode(76,73,66,82,69))</ScRiPt>",
+	"<SCRIPT SRC=http://mercadolibre.com.ar/xss.js></SCRIPT>",
+	"<IMG SRC=\"javascript:alert('MeLi')\;\">",
+	"<SCRIPT SRC=//mercadolibre.com.ar/>",
+	"</TITLE><SCRIPT>alert(\"XSS\")\;</SCRIPT>",
+	"<BODY BACKGROUND=\"javascript:alert(\'Just a normal alert\')\">",
+	"<IMG SRC=JaVaScRiPt:alert('lalala')>",
+	"<IMG SRC=`javascript:alert(\"MeLi, 'XSS'\")`>",
+	"<IMG \"\"\"><SCRIPT>alert(\"muahahaha\")</SCRIPT>\">",
+	"<IMG \"\"\"><ScRipT>alert(\"muahahaha\")</ScRipT>\">",
+	"<IMG SRC=javascript:alert(String.fromCharCode(88,83,83))>",
+	"<IMG SRC=# onmouseover=\"alert('click me!')\">",
+	"<<SCRIPT>alert(\"hi!\");//<</SCRIPT>",
+	"<BODY ONLOAD=alert('me again')>",
+	"<a onmouseover=\"alert(document.cookie)\">free stuff!</a> ",
+	"<BODY ONLOAD=alert('XSS')>",
+	"<SCRIPT SRC=\"https://mercadolibre.com.ar/hack.jpg\"></SCRIPT>",
+	"<SCRIPT a=\">\" SRC=\"https://mercadolibre.com.ar/hack.js\"></SCRIPT>",
+	"<A HREF=\"http://66.102.7.147/\">XSS</A>",
+	"<A HREF=\"http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D\">XSS</A>",
+	"<A HREF=\"http://0102.0146.0007.00000223/\">XSS</A>",
+	"<A HREF=\"//www.google.com/\">XSS</A>",
+	"<A HREF=\"javascript:document.location='http://www.google.com/'\">XSS</A>"
+	]
+}
+
+
+<script>confirm(1)</script>
+<svg onload=confirm(1)>
