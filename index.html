@@ -2,84 +2,73 @@
 <head>
 <title> XSS SCANNER v1.0 </title>
 <meta charset="utf-8">
-
 <link rel="stylesheet" type="text/css" href="mystyle.css">
 
 <script type="text/javascript">
 
-function verifyDOM(url){
-  url = 'http://allow-any-origin.appspot.com/' + url;
-  alert(url);
-  xmlhttp=new XMLHttpRequest();
-  xmlhttp.open("GET",url,false);
-  xmlhttp.send();
-  parser=new DOMParser();
-  alert(xmlhttp.responseText);
-}
-
+//#################################################################################
+//Funzione che controlla la presenza di form, se ne trova richiama a sua volta un altra funzione per valutare la
+//presenza di costrutti attaccabili
 function ValidURL(textval) {
   //For test into private net remove proxy
   urlControl = 'http://allow-any-origin.appspot.com/' + textval;
   xhr = new XMLHttpRequest();
   xhr.open("GET",urlControl,false);
-  //xhr.responseType= "text";
   xhr.send();
   verifyURL = new DOMParser();
   var sito = xhr.responseText;
   UrlExist = xhr.status;
   if (UrlExist != 200)
-  {
-    return false;
-  }
-  //console.log("Ecco la pagina HTML del sito: " , urlControl);
-  //console.log(sito);
+    {
+      return false;
+    }
+
   riga = sito.split('\n');
   var posizione, stringa, value_post, stringa_post, pos_temp,str_temp, UrlDaControllare;
   var linkOnPage=[];
-  //Trovo i campi name per inject XSS
+  //Trovo i campi name per inject XSS ricercando la stringa "text="
    for (var x=0; x<riga.length; x++){
           posizione=riga[x];
-          //stringa = posizione.indexOf("<form ");
           stringa = posizione.indexOf('type="text"');
-
           if (stringa != -1){
-     pos_temp = posizione.indexOf("name=");
-      if (pos_temp != -1){
-        pos_temp = posizione.substring(pos_temp+5);
-        value_post = pos_temp.match(/"([^"]+)"/)[1];
+            pos_temp = posizione.indexOf("name=");
+              if (pos_temp != -1){
+                pos_temp = posizione.substring(pos_temp+5);
+                value_post = pos_temp.match(/"([^"]+)"/)[1];
         //Partendo dal numero di riga dove ho trovato il campo "type=text" faccio una ricerca inversa per trovare i campi del form
-        for (var y=x; y>0;y--){
-          pos_temp = riga[y];
-          str_temp = pos_temp.lastIndexOf("<form");
-          if (str_temp != -1 ){
-          str_temp =  pos_temp.substring(str_temp+5);
-          stringa_post = str_temp.match(/"([^"]+)"/)[1];
-          //console.log(y,stringa_post,value_post);
-          UrlDaControllare=urlControl+'/'+stringa_post;
-<<<<<<< HEAD
-          //console.log(UrlDaControllare, value_post);
-=======
-          console.log(UrlDaControllare, value_post);
->>>>>>> b78d9670ba6124a3324eefdeb64bb3202b6130ad
-             xssExist = TestXSS("GET", UrlDaControllare,value_post);
+        //dove testare injection del payload
+                  for (var y=x; y>0;y--){
+                    pos_temp = riga[y];
+                    str_temp = pos_temp.lastIndexOf("<form");
+                      if (str_temp != -1 ){
+                        str_temp =  pos_temp.substring(str_temp+5);
+                        //ricavo il valore della funzione collegata al form.
+                        stringa_post = str_temp.match(/"([^"]+)"/)[1];
+                        UrlDaControllare=urlControl+'/'+stringa_post;
+                        console.log(UrlDaControllare, value_post);
+                        //Per ogni valore trovato chiamo la funzione TestXSS che proverà a inviare il payload all'URL ricavato
+                        xssExist = TestXSS("GET", UrlDaControllare,value_post);
 
-        }
-      }
-     }
-   }
-
-   }
+                      }
+                    }
+                  }
+                }
+              }
 }
 
+//#####################################################################################à
+//Funzione che prende in input un metodo(GET o POST ma x adesso solo GET a causa dei limiti del proxy usato), URL e parametri
+//per provare a iniettare il payload e verificare la presenza di un eventuale vulnerabilità XSS.
 function TestXSS(method,url,parameters){
-
-  var responseStatus,length_file, allText;
+  var length_file, allText;
+//La variabile params contiene il file da cui prendere i payload per testare l'attacco
   var params="payloads";
   var Param_reader = new FileReader();
   //Leggo il file di configurazione per caricare i payloads
   var rawFile = new XMLHttpRequest();
   rawFile.open("GET", params, false);
   rawFile.onreadystatechange = function ()
+//Controllo che la connessione sia completata
   {
       if(rawFile.readyState === 4)
       {
@@ -88,56 +77,29 @@ function TestXSS(method,url,parameters){
               allText = rawFile.responseText;
               allText = allText.split('\n');
               length_file = allText.length;
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b78d9670ba6124a3324eefdeb64bb3202b6130ad
-              //La variabile allText è un array che contiene tutti i payloads da testare per l'attacco
+        //La variabile allText è un array che contiene tutti i payloads da testare per l'attacco
           }
       }
   }
+
   rawFile.send(null);
    var test_xss = new XMLHttpRequest();
-<<<<<<< HEAD
    var stringaGet, ResponseSite, stringaConfronto;
    //testo tutti i parametri che ho nel file
    for (var z=0; z< (length_file - 1); z++){
-     //console.log("Parametro da testare:", allText[z] );
+     //preparo la stringa da aggiungere all'URL
      stringaGet= (url + "?" + parameters + "=" + allText[z]);
-     //console.log(stringaGet);
      test_xss.open(method,stringaGet,false);
      test_xss.send();
      console.log("sito: " ,stringaGet);
      ResponseSite = test_xss.responseText;
-
-
-    stringaConfronto = ResponseSite.indexOf(allText[z]);
+     stringaConfronto = ResponseSite.indexOf(allText[z]);
   //Controllo la risposta del sito è se trovo la stessa stringa che ho iniettato significa che probabilmente ho un XSS
      if (stringaConfronto != -1){
        alert("Possibile XSS!!!!");
      }
-=======
-   var stringaGet;
-   //testo tutti i parametri che ho nel file
-   for (var z=0; z< (length_file - 1); z++){
-     console.log("Parametro da testare:", allText[z] );
-     stringaGet= (url + "?" + parameters + "=" + allText[z]);
-     console.log(stringaGet);
-     test_xss.open(method,stringaGet,parameters);
-     test_xss.send();
->>>>>>> b78d9670ba6124a3324eefdeb64bb3202b6130ad
-   }
+  }
 }
-
-
-  /*xssTest = new XMLHttpRequest();
-  xssTest.open(method,url,false);
-  xssTest.send(params);
-  var sito = xssTest.responseText;
-  responseStatus = xssTest.status;
-  console.log(responseStatus);
-*/
 </script>
 
 </head>
@@ -148,8 +110,8 @@ function TestXSS(method,url,parameters){
    <button onclick="TestXSS('payloads')">Ana...lyze</button>
    <p/>
 
-<input type="file" name="file" id="file">
-<script type="text/javascript">
+  <input type="file" name="file" id="file">
+    <script type="text/javascript">
 document.getElementById('file').onchange = function(){
  var file = this.files[0];
 
@@ -177,9 +139,6 @@ document.getElementById('file').onchange = function(){
 
   reader.readAsText(file);
  }
-//Download any elements of array that contain url and take a look of Dom
-
-
-</script>
-</body>
+    </script>
+  </body>
 </html>
