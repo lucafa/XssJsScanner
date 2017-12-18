@@ -24,11 +24,53 @@ function ValidURL(textval) {
     }
 
   riga = sito.split('\n');
-  var posizione, stringa, value_post, stringa_post, pos_temp,str_temp, UrlDaControllare;
+  var posizione, metodo,stringa, value_post, stringa_post, pos_temp,str_temp, UrlDaControllare, tipoMetodo, nomeFunzione;
   var linkOnPage=[];
   //Trovo i campi name per inject XSS ricercando la stringa "text="
    for (var x=0; x<riga.length; x++){
           posizione=riga[x];
+<<<<<<< HEAD
+          stringa = posizione.indexOf('<form');
+          if (stringa != -1){
+            pos_temp = posizione.indexOf('method=');
+              if (pos_temp != -1){
+                pos_temp = posizione.substring(pos_temp+5);
+                //Qui trovo il tipo di metodo;
+                tipoMetodo = pos_temp.match(/"([^"]+)"/)[1];
+                  //qui trovo il valore name del campo form
+                  if (tipoMetodo != -1){
+                    pos_temp = posizione.indexOf('name=');
+                    pos_temp = posizione.substring(pos_temp+5);
+
+                      nomeFunzione = pos_temp.match(/"([^"]+)"/)[1];
+                  }
+                  //Adesso devo trovare la variabile nei campi input successivi
+                  for (var y = x; y < riga.length; y++){
+                    var ptemp = riga[y];
+                    str_temp = ptemp.indexOf('<input');
+                    if (str_temp != -1){
+                    console.log(str_temp);
+                    str_temp = ptemp.substring(str_temp+5);
+                    valoreNome = str_temp.match(/"([^"]+)"/)[1];
+                    //console.log(urlControl, tipoMetodo, nomeFunzione, valoreNome);
+                  }
+                  }
+
+              }
+            }
+          }
+          //A questo punto ho ricavato tutti i parametri che mi servono per testare gli xss
+          console.log(tipoMetodo);
+          //if ((tipoMetodo != 'get' || (tipoMetodo != "GET") || (tipoMetodo != "Get")){
+          if (tipoMetodo != 'get' ){
+            alert("Metodo post non utilizzabile!");
+          }
+          else {
+            UrlDaControllare=urlControl +'/'+ nomeFunzione ;
+            TestXSS(tipoMetodo,UrlDaControllare,valoreNome);
+          }
+  }
+=======
           stringa = posizione.indexOf('type="text"');
           if (stringa != -1){
             pos_temp = posizione.indexOf("name=");
@@ -55,6 +97,7 @@ function ValidURL(textval) {
                 }
               }
 }
+>>>>>>> 85e5901c0a4eeb7a8b8b73f39e85979f18d5098b
 
 //#####################################################################################à
 //Funzione che prende in input un metodo(GET o POST ma x adesso solo GET a causa dei limiti del proxy usato), URL e parametri
@@ -100,6 +143,23 @@ function TestXSS(method,url,parameters){
      }
   }
 }
+<<<<<<< HEAD
+
+//Partendo dal numero di riga dove ho trovato il campo "type=text" faccio una ricerca inversa per trovare i campi del form
+//dove testare injection del payload
+          /*for (var y=x; y>0;y--){
+            pos_temp = riga[y];
+            str_temp = pos_temp.lastIndexOf("<form");
+              if (str_temp != -1 ){
+                str_temp =  pos_temp.substring(str_temp+5);
+                //ricavo il valore della funzione collegata al form.
+                stringa_post = str_temp.match(/"([^"]+)"/)[1];
+                UrlDaControllare=urlControl+'/'+stringa_post;
+                console.log(UrlDaControllare, value_post);
+                //Per ogni valore trovato chiamo la funzione TestXSS che proverà a inviare il payload all'URL ricavato
+                xssExist = TestXSS("GET", UrlDaControllare,value_post);*/
+=======
+>>>>>>> 85e5901c0a4eeb7a8b8b73f39e85979f18d5098b
 </script>
 
 </head>
