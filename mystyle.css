@@ -1,21 +1,120 @@
+body {
+   background-image: url("backgroundimg.jpg");
+   background-repeat: repeat;
+}
 
-  #progress_bar {
-    margin: 10px 0;
-    padding: 3px;
-    border: 1px solid #000;
-    font-size: 14px;
-    clear: both;
-    opacity: 0;
-    -moz-transition: opacity 1s linear;
-    -o-transition: opacity 1s linear;
-    -webkit-transition: opacity 1s linear;
-  }
-  #progress_bar.loading {
-    opacity: 1.0;
-  }
-  #progress_bar .percent {
-    background-color: #99ccff;
-    height: auto;
-    width: 0;
+#container {
+  visibility:hidden;
+    margin:auto;
+    width: 500px;
+    height: 20px;
+    background: grey;
+    overflow: hidden;
+    text-align: right;
+    border:thin black solid;
+
+    }
+
+#reportXML{
+	 visibility:hidden;
+}
+
+#message{
+  display: block;
+  margin:auto;
+  text-align: center;
+  margin-top:30px;
+  color:white;
+  font-weight:bold;
+}
+#bar {
+    height: 20px;
+    background: yellow;
+
+}
+  #titolo{
+    margin:auto;
+    display:block;
+    font-size: 44px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    margin-bottom: 3mm;
+    width: 50%;
   }
 
+#esempio{
+  display:block;
+  margin:auto;
+  margin-top:40px;
+  border:thin black solid;
+  background-color: white;
+  color:black;
+  width:30%;
+  text-align:left;
+
+}
+#report{
+  visibility: hidden;
+  margin:auto;
+  margin-top: 60px;
+  display:block;
+  font-size: medium;
+  font-weight: bold;
+  text-align: center;
+  background-color: grey;
+  margin-bottom: 3mm;
+  color:black;
+}
+
+#printXML{
+	
+    margin:auto;
+    margin-top: 80px;
+    display:block;
+    font-size: medium;
+    font-weight: normal;
+    text-align: center;
+    background-color:white;
+    color: inherit;
+    border:thin black solid;
+    margin-bottom: 3mm;
+    color:black;
+ 
+}
+
+#bottoni{
+	  margin:auto;
+    margin-top: 80px;
+    display:block;
+    font-size: medium;
+    font-weight: normal;
+    text-align: center;
+  	
+}	
+
+  p{
+    width: 50%;
+    margin: auto;
+    margin-top: 80px;
+    display:block;
+    font-size: medium;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 3mm;
+    color:white;
+  }
+  input{
+    margin:auto;
+    margin-top: 80px;
+    display:block;
+    font-size: medium;
+    font-weight: normal;
+    text-align: center;
+    background-color:white;
+    color: inherit;
+    border:thin black solid;
+    margin-bottom: 3mm;
+    color:black;
+
+  }
