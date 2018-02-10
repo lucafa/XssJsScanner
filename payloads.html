@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>XSS Scanner</title>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+<body>
+<h2 id=titolo>Lista di Payload disponibili</h2> 
+
+ <table id="esempio">
+     <tr><th> &lt;script>alert("123")&lt;/script&gt;</th></tr>
+     <tr><th>&lt;script&gt;alert('XSSYA')&lt;/script&gt;</th></tr>
+     <tr><th>1&lt;script&gt;prompt(962477)&lt;/script&gt;</th></tr>
+     <tr><th>&lt;script&gt;alert('xssya')&lt;/script&gt;</th></tr>
+   </table>
+   
+   <p><a href="index.html">Torna indietro</a></p>
+
+</body>
+</html>
